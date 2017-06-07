@@ -2,10 +2,10 @@
 import ddf.minim.*;
 Minim minim;
 AudioPlayer track;
-int stripeCount;
 int resolution = 50;
 int stripeW = 50;
 float music;
+float volume = 40;
 ArrayList<Stripe> stripes;
 
 void setup() {
@@ -13,12 +13,18 @@ void setup() {
   size(600, 800);
   
   // Setup Vars
-  stripeCount = 3;
   stripes = new ArrayList<Stripe>();
-  for(int i = 0; i < stripeCount; i++){
-    PVector loc = new PVector(width/2, 0);
-    stripes.add(new Stripe(loc, resolution, stripeW));
-  }
+  
+  // Defining Stripe position manually for ease of positioning
+  PVector loc = new PVector(width/2+stripeW*2, -20);
+  int idx = 0;
+  stripes.add(new Stripe(loc, resolution, stripeW, idx++));
+  
+  loc = new PVector(width/3+stripeW*2, -20);
+  stripes.add(new Stripe(loc, resolution, stripeW, idx++));
+  
+  loc = new PVector(width/3*2+stripeW*2, -20);
+  stripes.add(new Stripe(loc, resolution, stripeW, idx++));
   
   // Minim stuff
   minim = new Minim(this);
@@ -30,11 +36,8 @@ void draw() {
   // Clear Screen
   background(0);
   
-  // Get level of Left track
-  music = track.left.get(0);
-  
   // Display each stripe
-  for(int i = 0; i < stripeCount; i++){
+  for(int i = 0; i < stripes.size(); i++){
     stripes.get(i).display();
   }
   fill(0);

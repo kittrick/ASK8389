@@ -18,34 +18,27 @@ class Link {
   }
 
   Link update(Stripe parent) {
-    
     PVector target;
     if(index == 0){
-      target = new PVector(music*40, 0);
-      //applyForce(target);
+      target = new PVector(track.left.get(0)*volume, 0);
+      pos.x = parent.pos.x;
+      pos.y = parent.pos.y;
     } else {
-      target = parent.chain.get(index-1).pos;
-      //applyForce(target);
+      target = new PVector(track.left.get(index*10)*volume, 0);
+      target.add(parent.chain.get(index-1).pos);
     }
     
-    PVector force = new PVector(
-      (target.x - pos.x) * stiffness, 
-      (target.y - pos.y) * stiffness
-    );
-
+    PVector force = PVector.sub(target, pos).mult(stiffness);
+    a = PVector.div(force, mass);
+    
     applyForce(gravity);
-    
-    
-    
-    a.x = force.x / mass;
-    a.y = force.y / mass;
-    
-    mouseRepel(mouseX, mouseY);
-    
+    mouseRepel();
     dampen();
     
-    v.y += mass * mass;
+    // Makes the chain work
+    v.y += 4;
     
+    // Add velocity to current position
     pos.add(v);
     
     return this;
@@ -59,17 +52,23 @@ class Link {
     return this;
   }
 
-  void mouseRepel(int x, int y) {
+  void mouseRepel() {
+    float x = mouseX;
+    float y = mouseY;
+    
+    // Set mouse position to bottom center if it is off screen
+    if(x <= 10 || x >= width-10){ x = width / 2; y = height * 4; }
+    if(y <= 10 || y >= height-10){ x = width / 2; y = height * 4; }
+    println(width+":"+x+","+height+":"+y);
+    
     PVector mouse = new PVector(x, y);
     PVector direction = PVector.sub(mouse, pos);
-    //distance = direction.mag();
     direction.normalize();
     
-    //float force = (gravity*mass) / (distance*distance);
     if(mousePressed){
-      direction.mult(-1);
+      direction.mult(4);
     } else {
-      direction.mult(1);
+      direction.mult(-4);
     }
     applyForce(direction);
   }
@@ -81,7 +80,6 @@ class Link {
   }
   
   void dampen(){
-      v.x = damping * (v.x + a.x);
-      v.y = damping * (v.y + a.y);
+    v = PVector.add(v,a).mult(damping);
   }
 }
