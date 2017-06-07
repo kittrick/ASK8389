@@ -5,12 +5,8 @@ AudioPlayer track;
 int stripeCount;
 int resolution = 50;
 int stripeW = 50;
-int pushIndex[] = {100, 0, -100};
+float music;
 ArrayList<Stripe> stripes;
-
-// Physics Vars
-float gravity = 9.0;
-float mass = 2.0;
 
 void setup() {
   //size(448, 512);
@@ -20,7 +16,7 @@ void setup() {
   stripeCount = 3;
   stripes = new ArrayList<Stripe>();
   for(int i = 0; i < stripeCount; i++){
-    PVector loc = new PVector(width/stripeCount*i+width/stripeCount/2-stripeW/2+pushIndex[i], 0);
+    PVector loc = new PVector(width/2, 0);
     stripes.add(new Stripe(loc, resolution, stripeW));
   }
   
@@ -31,15 +27,17 @@ void setup() {
 }
 
 void draw() {
+  // Clear Screen
   background(0);
-  PVector t = new PVector(track.left.get(0)*100,0);
+  
+  // Get level of Left track
+  music = track.left.get(0);
+  
+  // Display each stripe
   for(int i = 0; i < stripeCount; i++){
-    stripes.get(i).display(t);
+    stripes.get(i).display();
   }
   fill(0);
   stroke(255);
   strokeWeight(50);
-  float d = track.left.get(0)*100;
-  d = map(d, -10, 10, 300, 320);
-  ellipse(mouseX, mouseY, d, d);
 }
