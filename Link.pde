@@ -32,9 +32,17 @@ class Link {
     
     PVector force = PVector.sub(target, pos).mult(stiffness);
     a = PVector.div(force, mass);
-    
     applyForce(gravity);
-    mouseRepel();
+    
+    // Use wanderers instead of the mouse
+    if(useMouse){
+      mouseRepel();
+    } else {
+      for(int i = 0; i < wanderers.size(); i++){
+        wanderRepel(wanderers.get(i));
+      }
+    }
+
     dampen();
     
     // Makes the chain work
@@ -53,6 +61,14 @@ class Link {
     fill(255,128);
     return this;
   }
+  
+  void wanderRepel(Wander w){
+    PVector wander = new PVector(w.pos.x, w.pos.y);
+    PVector direction = PVector.sub(wander, pos);
+    direction.normalize();
+    direction.mult(-multiplier());
+    applyForce(direction);
+  }
 
   void mouseRepel() {
     float x = mouseX;
@@ -67,9 +83,9 @@ class Link {
     direction.normalize();
     
     if(mousePressed){
-      direction.mult((pIndex+1));
+      direction.mult(multiplier());
     } else {
-      direction.mult(-(pIndex+1));
+      direction.mult(-multiplier());
     }
     applyForce(direction);
   }
@@ -82,5 +98,10 @@ class Link {
   
   void dampen(){
     v = PVector.add(v,a).mult(damping);
+  }
+  
+  // Strength of mouse or wanderer offset
+  float multiplier(){
+    return pIndex+1;
   }
 }

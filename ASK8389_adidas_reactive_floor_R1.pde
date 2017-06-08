@@ -7,6 +7,9 @@ int stripeW = 50;
 float music;
 float volume = 70;
 ArrayList<Stripe> stripes;
+ArrayList<Wander> wanderers;
+int wanderCount = 3;
+boolean useMouse = false;
 
 void setup() {
   //size(448, 512);
@@ -14,6 +17,12 @@ void setup() {
   
   // Setup Vars
   stripes = new ArrayList<Stripe>();
+  wanderers = new ArrayList<Wander>();
+  
+  // Wanderers
+  for(int i=0; i < wanderCount; i++){
+    wanderers.add(new Wander(i));
+  }
   
   // Defining Stripe position manually for ease of positioning
   PVector loc = new PVector(width/2+stripeW*2, -20);
@@ -36,6 +45,13 @@ void draw() {
   // Clear Screen
   background(0);
   
+  // Wanderers
+  if(useMouse == false){
+    for(int i=0; i < wanderers.size(); i++){
+      wanderers.get(i).update().display();
+    }
+  }
+  
   // Display each stripe
   for(int i = 0; i < stripes.size(); i++){
     blendMode(ADD);
@@ -45,7 +61,12 @@ void draw() {
   fill(0);
   stroke(255);
   strokeWeight(50);
-  //blackStripes();
+  blackStripes();
+  
+  fill(255);
+  text("Moouse: UP",20,20);
+  text("Wanderers: DOWN",20,40);
+  noFill();
 }
 
 void rgbStripe(PVector loc, int idx){
@@ -70,4 +91,14 @@ void blackStripes(){
     noStroke();
   }
   strokeWeight(1);
+}
+
+void keyPressed() {
+  if (key == CODED) {
+    if (keyCode == UP) {
+      useMouse = true;
+    } else if (keyCode == DOWN) {
+      useMouse = false;
+    } 
+  }
 }
