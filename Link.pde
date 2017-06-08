@@ -102,6 +102,6 @@ class Link {
   
   // Strength of mouse or wanderer offset
   float multiplier(){
-    return pIndex+1;
+    return map(pIndex,0,3,0.25,0.3)*10;
   }
 }
