@@ -45,10 +45,29 @@ void draw() {
   fill(0);
   stroke(255);
   strokeWeight(50);
+  blackStripes();
 }
 
 void rgbStripe(PVector loc, int idx){
   stripes.add(new Stripe(loc, resolution, stripeW, color(255,0,0), idx++));
   stripes.add(new Stripe(loc, resolution, stripeW, color(0,255,0), idx++));
   stripes.add(new Stripe(loc, resolution, stripeW, color(0,0,255), idx++));
+}
+
+void blackStripes(){
+  strokeWeight(2);
+  for(int y = 0; y < height; y+=4){
+    stroke(0);
+    strokeWeight(2);
+    line(0,y, width, y);
+    noStroke();
+  }
+  
+  for(int x = 0; x < width; x+=4){
+    stroke(0);
+    strokeWeight(2);
+    line(x,0, x, height);
+    noStroke();
+  }
+  strokeWeight(1);
 }

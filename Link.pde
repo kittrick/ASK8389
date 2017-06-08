@@ -67,9 +67,9 @@ class Link {
     direction.normalize();
     
     if(mousePressed){
-      direction.mult((pIndex+1)*1.1);
+      direction.mult((pIndex+1));
     } else {
-      direction.mult(-(pIndex+1)*1.1);
+      direction.mult(-(pIndex+1));
     }
     applyForce(direction);
   }
