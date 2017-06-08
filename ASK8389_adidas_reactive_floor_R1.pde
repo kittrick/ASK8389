@@ -10,6 +10,7 @@ ArrayList<Stripe> stripes;
 ArrayList<Wander> wanderers;
 int wanderCount = 3;
 boolean useMouse = false;
+boolean usePixels = false;
 
 void setup() {
   //size(448, 512);
@@ -61,11 +62,13 @@ void draw() {
   fill(0);
   stroke(255);
   strokeWeight(50);
-  blackStripes();
+  if(usePixels) blackStripes();
   
   fill(255);
   text("Moouse: UP",20,20);
   text("Wanderers: DOWN",20,40);
+  text("Pixels On: RIGHT",20,60);
+  text("Pixels Off: LEFT",20,80);
   noFill();
 }
 
@@ -99,6 +102,10 @@ void keyPressed() {
       useMouse = true;
     } else if (keyCode == DOWN) {
       useMouse = false;
+    } else if (keyCode == LEFT) {
+      usePixels = false;
+    } else if (keyCode == RIGHT) {
+      usePixels = true;
     } 
   }
 }
