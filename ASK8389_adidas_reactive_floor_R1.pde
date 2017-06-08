@@ -51,6 +51,15 @@ void draw() {
     for(int i=0; i < wanderers.size(); i++){
       wanderers.get(i).update().display();
     }
+  } else {
+    stroke(255,0,0);
+    strokeWeight(5);
+    blendMode(BLEND);
+    fill(0);
+    ellipse(mouseX, mouseY, 30, 30);
+    strokeWeight(1);
+    noStroke();
+    blendMode(ADD);
   }
   
   // Display each stripe
