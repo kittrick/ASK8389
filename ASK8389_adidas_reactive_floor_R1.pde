@@ -45,7 +45,7 @@ void draw() {
   fill(0);
   stroke(255);
   strokeWeight(50);
-  blackStripes();
+  //blackStripes();
 }
 
 void rgbStripe(PVector loc, int idx){
