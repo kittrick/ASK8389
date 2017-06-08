@@ -4,8 +4,10 @@ class Stripe {
   ArrayList<Link> chain;
   int w;
   int index;
+  color fill;
 
-  Stripe(PVector position, int resolution, int stripeW, int idx){
+  Stripe(PVector position, int resolution, int stripeW, color c, int idx){
+    fill = c;
     index = idx;
     w = stripeW;
     res = resolution;
@@ -17,7 +19,7 @@ class Stripe {
   }
   Stripe display(){
       noStroke();
-      fill(255);
+      fill(fill);
       beginShape();
         chain.get(0).update(this);
         vertex(chain.get(0).pos.x-w/2, chain.get(0).pos.y);

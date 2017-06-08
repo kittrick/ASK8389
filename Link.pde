@@ -9,6 +9,7 @@ class Link {
   float stiffness = 0.2;
   float damping = 0.7;
   float distance;
+  int pIndex;
 
   Link(float xpos, float ypos, int idx) {
     index = idx;
@@ -18,13 +19,14 @@ class Link {
   }
 
   Link update(Stripe parent) {
+    pIndex = parent.index;
     PVector target;
     if(index == 0){
       target = new PVector(track.left.get(0)*volume, 0);
       pos.x = parent.pos.x;
       pos.y = parent.pos.y;
     } else {
-      target = new PVector(track.left.get(index*10)*volume, 0);
+      target = new PVector(track.left.get(index*20)*volume, 0);
       target.add(parent.chain.get(index-1).pos);
     }
     
@@ -59,16 +61,15 @@ class Link {
     // Set mouse position to bottom center if it is off screen
     if(x <= 10 || x >= width-10){ x = width / 2; y = height * 4; }
     if(y <= 10 || y >= height-10){ x = width / 2; y = height * 4; }
-    println(width+":"+x+","+height+":"+y);
     
     PVector mouse = new PVector(x, y);
     PVector direction = PVector.sub(mouse, pos);
     direction.normalize();
     
     if(mousePressed){
-      direction.mult(4);
+      direction.mult((pIndex+1)*1.1);
     } else {
-      direction.mult(-4);
+      direction.mult(-(pIndex+1)*1.1);
     }
     applyForce(direction);
   }
